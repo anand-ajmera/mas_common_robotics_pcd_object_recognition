@@ -1,0 +1,21 @@
+<launch>
+
+  <group ns="mcr_perception">
+
+    <!--node pkg="nodelet" type="nodelet" name="santosh" args="manager"/-->
+    <node pkg="nodelet" type="nodelet" name="voxel_filter"
+          args="load pcl/VoxelGrid /arm_cam3d/arm_cam3d_nodelet_manager">
+      <remap from="~input" to="/arm_cam3d/depth_registered/points" />
+    </node>
+    <node pkg="nodelet" type="nodelet" name="test_cloud"
+        args="load mcr_object_recognition/ObjectRecognitionFPFH /arm_cam3d/arm_cam3d_nodelet_manager" output="screen">
+        <remap from="~input_test" to="/mcr_perception/object_detector/single_object" /> 
+    </node>
+  <node pkg="mcr_object_recognition" type="object_recognizer_list" name="object_recognizer"
+          output="screen">
+    <param name="classifier" value="athome" type="str" />
+    <remap from="~input" to="/mcr_perception/test_cloud/output_test" /> 
+  </node>
+
+  </group>
+</launch>

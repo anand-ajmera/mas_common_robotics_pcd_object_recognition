@@ -1,0 +1,13 @@
+<library path="lib/libobject_recognition">
+  <class name="mcr_object_recognition/ObjectRecognitionCoordinator" type="mcr_object_recognition::ObjectRecognitionCoordinator" base_class_type="nodelet::Nodelet">
+    <description>
+        nodelet plugin that coordinates object recognition by calling object detector, and one or more object recognition implementations
+    </description>
+  </class>
+
+    <class name="mcr_object_recognition/ObjectRecognitionFPFH" type="mcr_object_recognition::ObjectRecognitionFPFH" base_class_type="nodelet::Nodelet">
+    <description>
+        nodelet plugin that coordinates object recognition by calling object detector, and one or more object recognition implementations
+    </description>
+  </class>
+</library>
