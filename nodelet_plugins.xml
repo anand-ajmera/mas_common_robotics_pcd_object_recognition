@@ -5,7 +5,7 @@
     </description>
   </class>
 
-    <class name="mcr_object_recognition/ObjectRecognitionFPFH" type="mcr_object_recognition::ObjectRecognitionFPFH" base_class_type="nodelet::Nodelet">
+    <class name="mcr_object_recognition/ObjectRecognitionESF" type="mcr_object_recognition::ObjectRecognitionESF" base_class_type="nodelet::Nodelet">
     <description>
         nodelet plugin that coordinates object recognition by calling object detector, and one or more object recognition implementations
     </description>

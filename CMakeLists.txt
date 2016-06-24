@@ -38,7 +38,7 @@ include_directories(
 ### LIBRARIES ####################################################
 add_library(object_recognition
 #  ros/src/object_recognition_coordinator.cpp
-  ros/src/object_recognition_fpfh.cpp
+  ros/src/object_recognition_esf.cpp
 )
 add_dependencies(object_recognition
   ${catkin_EXPORTED_TARGETS}

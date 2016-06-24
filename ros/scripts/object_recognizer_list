@@ -37,19 +37,14 @@ def get_feature_vector(pc):
     # convert generator to list of lists then numpy array
     xyzrgb = [list(elem) for elem in list(xyzrgb_gen)]
     xyzrgb = np.array(np.ravel(xyzrgb))
-    print "feature vector shape" ,xyzrgb.shape
-    #rgb = xyzrgb[:,3][np.newaxis].T
-    #hsv = np.array([list(colorsys.rgb_to_hsv(*float_to_rgb(i))) for i in rgb])
-    #xyzhsv = np.hstack([xyzrgb[:,0:3], hsv])
-
+    # print "feature vector shape" ,xyzrgb.shape
+ 
     return xyzrgb
 
 if __name__ == '__main__':
     rospy.init_node(NODE)
     classifier = load_classifier(rospy.get_param("~classifier"))
-    #pub = rospy.Publisher("~results", mcr_perception_msgs.msg.RecognitionResultList, queue_size=1)
-    pub_single = rospy.Publisher("~result_single", std_msgs.msg.String, queue_size=1)
-    pub_single_prob = rospy.Publisher("~result_single_prob",std_msgs.msg.Float64, queue_size=1)
+    pub = rospy.Publisher("~results", mcr_perception_msgs.msg.RecognitionResultList, queue_size=1)
 
     def cluster_cb(data):
         if data.pointclouds:
@@ -57,22 +52,14 @@ if __name__ == '__main__':
             result_list.header = data.header
             for cloud in data.pointclouds:
                 result = mcr_perception_msgs.msg.RecognitionResult()
-                xyzhsv = convert_to_xyzhsv(cloud)
-                features = calculate_feature_vector(xyzhsv, True)
+                features = get_feature_vector(cloud)
                 label, probability = classifier.classify(features)
                 result.label = label
                 result.probability = probability
                 result_list.results.append(result)
             pub.publish(result_list)
 
-    def pc_cb(data):
-        feature_vector = get_feature_vector(data)
-        label, probability = classifier.classify(feature_vector)
-        pub_single.publish(label)
-        pub_single_prob.publish(probability)
 
-
-    #sub = rospy.Subscriber("~cluster_list", mcr_perception_msgs.msg.PointCloud2List, cluster_cb);
-    sub = rospy.Subscriber("~input", sensor_msgs.msg.PointCloud2, pc_cb);
+    sub = rospy.Subscriber("~cluster_list", mcr_perception_msgs.msg.PointCloud2List, cluster_cb);
     rospy.loginfo('Started recognition node.')
     rospy.spin()
